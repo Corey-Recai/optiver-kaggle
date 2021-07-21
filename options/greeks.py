@@ -1,27 +1,10 @@
 from math import log, sqrt, exp, pi
 from scipy.stats import norm
 
-
-class BlackScholes:
-
-    @classmethod
-    def d1(cls, price, strike, interest, sigma, maturity, dividend=0):
-        return (log(price / strike) + (interest - dividend + (sigma ** 2) / 2) * maturity) / (sigma * (sqrt(maturity)))
-
-    @classmethod
-    def d2(cls, d1, sigma, maturity):
-        return d1 - sigma * (sqrt(maturity))
-
-    @classmethod
-    def call_price(cls, d1, d2, price, strike, interest, maturity):
-        return price * norm.cdf(d1) - strike * exp(-interest * maturity) * norm.cdf(d2)
-
-    @classmethod
-    def put_price(cls, d1, d2, price, strike, interest, maturity):
-        return BlackScholes.call_price(d1, d2, price, strike, interest, maturity) - price + strike * exp(-interest * maturity)
+from options.black_scholes import BlackScholes
 
 
-class GreeksCall:
+class Call:
 
     @classmethod
     def delta(cls, d1, maturity, dividend=0):
@@ -45,7 +28,7 @@ class GreeksCall:
         return -price * exp(-(d1 ** 2) / 2 - dividend * maturity) * sigma / sqrt(8 * maturity * pi) + dividend * price * exp(-dividend * maturity) * norm.cdf(d1) - interest * strike * exp(-interest * maturity) * norm.cdf(d2)
 
 
-class GreeksPut:
+class Put:
 
     @classmethod
     def delta(cls, d1, maturity, dividend=0):

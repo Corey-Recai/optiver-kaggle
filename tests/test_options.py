@@ -34,7 +34,7 @@ class TestOptions(unittest.TestCase):
     def test_call_rho(self):
         d1 = sut.BlackScholes.d1(100, 90, 0.06, 0.35, 0.5, 0.02)
         d2 = sut.BlackScholes.d2(d1, 0.35, 0.5)
-        self.assertEqual(28.34456926246856, sut.GreeksCall.rho(d2, 100, 90, 0.06, 0.5))
+        self.assertEqual(28.34456926246856, sut.GreeksCall.rho(d2, 90, 0.06, 0.5))
 
     def test_call_theta(self):
         d1 = sut.BlackScholes.d1(100, 90, 0.06, 0.35, 0.5, 0.02)

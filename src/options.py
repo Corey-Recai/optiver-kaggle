@@ -36,7 +36,7 @@ class GreeksCall:
         return s * sqrt(t) * exp(-(d1 ** 2) / 2) * exp(-k * t) / sqrt(2 * pi)
 
     @classmethod
-    def rho(cls, d2, s, x, r, t):
+    def rho(cls, d2, x, r, t):
         return x * t * exp(-r * t) * norm.cdf(d2)
 
 
@@ -68,11 +68,3 @@ class GreeksPut:
     def theta(cls, d1, d2, s, x, r, sig, t, k):
         return -s * exp(-(d1 ** 2) / 2 - k * t) * sig / sqrt(8 * t* pi) - k * s * exp(-k * t) * (1 - norm.cdf(d1)) + r * x * exp(-r * t) * (1-norm.cdf(d2))
 
-
-d1 = BlackScholes.d1(100, 90, 0.06, 0.35, 0.5, 0.02)
-d2 = BlackScholes.d2(d1, 0.35, 0.5)
-print(GreeksPut.delta(d1, 0.5, 0.02))
-print(GreeksPut.gamma(d1, 100, 0.35, 0.5, 0.02))
-print(GreeksPut.vega(d1, 100, 0.5, 0.02))
-print(GreeksPut.rho(d2, 100, 90, 0.06, 0.5))
-print( GreeksPut.theta(d1, d2, 100, 90, 0.06, 0.35, 0.5, 0.02))

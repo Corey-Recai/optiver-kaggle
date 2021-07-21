@@ -3,7 +3,10 @@ A repo for the Optiver Realized Volatility Prediction Kaggle Competition
 
 1. To get started with the notebook, first install the requirements from the `requirements.txt`. This can be done by uncommenting the first cell and running it or by running the following command in your terminal:
 
-    `pip install -r requirements.txt`
+    ```
+    pip install -r requirements.txt
+    python -m unittest
+    ```
 
 2. Run the next cell to generate a `optiver-kaggle.env` file. Please be sure to include the follwing in the file:
 

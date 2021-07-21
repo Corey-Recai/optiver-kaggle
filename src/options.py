@@ -40,7 +40,7 @@ class GreeksCall:
 
 
     @classmethod
-    def theta(cls, d1, d2, s, x, r, sig, t, k):
+    def theta(cls, d1, d2, s, x, r, sig, t, k=0):
         return -s * exp(-(d1 ** 2) / 2 - k * t) * sig / sqrt(8 * t * pi) + k * s * exp(-k * t) * norm.cdf(d1) - r * x * exp(-r * t) * norm.cdf(d2)
 
 
@@ -64,6 +64,6 @@ class GreeksPut:
         return -x * t * exp(-r * t) * norm.cdf(-d2)
 
     @classmethod
-    def theta(cls, d1, d2, s, x, r, sig, t, k):
+    def theta(cls, d1, d2, s, x, r, sig, t, k=0):
         return -s * exp(-(d1 ** 2) / 2 - k * t) * sig / sqrt(8 * t* pi) - k * s * exp(-k * t) * (1 - norm.cdf(d1)) + r * x * exp(-r * t) * (1-norm.cdf(d2))
 

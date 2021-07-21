@@ -20,9 +20,12 @@ class BlackScholes:
     def put_price(cls, s, x, r, sig, t):
         return BlackScholes.call_price(s, x, r, sig, t) - s + x * exp(-r * t)
 
+
+class GreeksCall:
+
     @classmethod
     def delta(cls, d1, t, k=0):
-        return exp(-k*t) * norm.cdf(d1)
+        return exp(-k * t) * norm.cdf(d1)
 
     @classmethod
     def gamma(cls, d1, s, sig, t, k=0):
@@ -43,3 +46,33 @@ class BlackScholes:
 
 
 
+class GreeksPut:
+
+    @classmethod
+    def delta(cls, d1, t, k=0):
+        return exp(-k * t) * norm.cdf(-d1)
+
+    @classmethod
+    def gamma(cls, d1, s, sig, t, k=0):
+        return exp(-(d1 ** 2) / 2 - k * t) / ( s * sig * sqrt(2 * t * pi))
+
+    @classmethod
+    def vega(cls, d1, s, t, k=0):
+        return s * exp(-(d1 ** 2) / 2 - k * t) * sqrt(t)/sqrt(2 * pi)
+
+    @classmethod
+    def rho(cls, d2, s, x, r, t):
+        return -x * t * exp(-r * t) * norm.cdf(-d2)
+
+    @classmethod
+    def theta(cls, d1, d2, s, x, r, sig, t, k):
+        return -s * exp(-(d1 ** 2) / 2 - k * t) * sig / sqrt(8 * t* pi) - k * s * exp(-k * t) * (1 - norm.cdf(d1)) + r * x * exp(-r * t) * (1-norm.cdf(d2))
+
+
+d1 = BlackScholes.d1(100, 90, 0.06, 0.35, 0.5, 0.02)
+d2 = BlackScholes.d2(d1, 0.35, 0.5)
+print(GreeksPut.delta(d1, 0.5, 0.02))
+print(GreeksPut.gamma(d1, 100, 0.35, 0.5, 0.02))
+print(GreeksPut.vega(d1, 100, 0.5, 0.02))
+print(GreeksPut.rho(d2, 100, 90, 0.06, 0.5))
+print( GreeksPut.theta(d1, d2, 100, 90, 0.06, 0.35, 0.5, 0.02))

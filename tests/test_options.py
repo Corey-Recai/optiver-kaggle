@@ -19,24 +19,46 @@ class TestOptions(unittest.TestCase):
     def test_put_price(self):
         self.assertEqual(2.3134827167985392, sut.BlackScholes.put_price(50., 45., 0.04, 0.3, 0.75))
 
-    def test_delta(self):
+    def test_call_delta(self):
         d1 = sut.BlackScholes.d1(100, 90, 0.06, 0.35, 0.5, 0.02)
-        self.assertEqual(0.728422438120952, sut.BlackScholes.delta(d1, 0.5, 0.02))
+        self.assertEqual(0.728422438120952, sut.GreeksCall.delta(d1, 0.5, 0.02))
 
-    def test_gamma(self):
+    def test_call_gamma(self):
         d1 = sut.BlackScholes.d1(100, 90, 0.06, 0.35, 0.5, 0.02)
-        self.assertEqual(0.013084364125226582, sut.BlackScholes.gamma(d1, 100, 0.35, 0.5, 0.02))
+        self.assertEqual(0.013084364125226582, sut.GreeksCall.gamma(d1, 100, 0.35, 0.5, 0.02))
 
-    def test_vega(self):
+    def test_call_vega(self):
         d1 = sut.BlackScholes.d1(100, 90, 0.06, 0.35, 0.5, 0.02)
-        self.assertEqual(22.897637219146517, sut.BlackScholes.vega(d1, 100, 0.5, 0.02))
+        self.assertEqual(22.897637219146517, sut.GreeksCall.vega(d1, 100, 0.5, 0.02))
 
-    def test_rho(self):
+    def test_call_rho(self):
         d1 = sut.BlackScholes.d1(100, 90, 0.06, 0.35, 0.5, 0.02)
         d2 = sut.BlackScholes.d2(d1, 0.35, 0.5)
-        self.assertEqual(28.34456926246856, sut.BlackScholes.rho(d2, 100, 90, 0.06, 0.5))
+        self.assertEqual(28.34456926246856, sut.GreeksCall.rho(d2, 100, 90, 0.06, 0.5))
 
-    def test_theta(self):
+    def test_call_theta(self):
         d1 = sut.BlackScholes.d1(100, 90, 0.06, 0.35, 0.5, 0.02)
         d2 = sut.BlackScholes.d2(d1, 0.35, 0.5)
-        self.assertEqual(-9.958676461955603, sut.BlackScholes.theta(d1, d2, 100, 90, 0.06, 0.35, 0.5, 0.02))
+        self.assertEqual(-9.958676461955603, sut.GreeksCall.theta(d1, d2, 100, 90, 0.06, 0.35, 0.5, 0.02))
+
+    def test_put_delta(self):
+        d1 = sut.BlackScholes.d1(100, 90, 0.06, 0.35, 0.5, 0.02)
+        self.assertEqual(0.2616273956282161, sut.GreeksPut.delta(d1, 0.5, 0.02))
+
+    def test_put_gamma(self):
+        d1 = sut.BlackScholes.d1(100, 90, 0.06, 0.35, 0.5, 0.02)
+        self.assertEqual(0.013084364125226582, sut.GreeksPut.gamma(d1, 100, 0.35, 0.5, 0.02))
+
+    def test_put_vega(self):
+        d1 = sut.BlackScholes.d1(100, 90, 0.06, 0.35, 0.5, 0.02)
+        self.assertEqual(22.897637219146517, sut.GreeksPut.vega(d1, 100, 0.5, 0.02))
+
+    def test_put_rho(self):
+        d1 = sut.BlackScholes.d1(100, 90, 0.06, 0.35, 0.5, 0.02)
+        d2 = sut.BlackScholes.d2(d1, 0.35, 0.5)
+        self.assertEqual(-15.32547974721431, sut.GreeksPut.rho(d2, 100, 90, 0.06, 0.5))
+
+    def test_put_theta(self):
+        d1 = sut.BlackScholes.d1(100, 90, 0.06, 0.35, 0.5, 0.02)
+        d2 = sut.BlackScholes.d2(d1, 0.35, 0.5)
+        self.assertEqual(-6.6983702482919965, sut.GreeksPut.theta(d1, d2, 100, 90, 0.06, 0.35, 0.5, 0.02))

@@ -62,7 +62,7 @@ class TestGreeksPut(unittest.TestCase):
     def test_put_rho(self):
         d1 = sut.BlackScholes.d1(100, 90, 0.06, 0.35, 0.5, 0.02)
         d2 = sut.BlackScholes.d2(d1, 0.35, 0.5)
-        self.assertEqual(-15.32547974721431, sut.GreeksPut.rho(d2, 100, 90, 0.06, 0.5))
+        self.assertEqual(-15.32547974721431, sut.GreeksPut.rho(d2, 90, 0.06, 0.5))
 
     def test_put_theta(self):
         d1 = sut.BlackScholes.d1(100, 90, 0.06, 0.35, 0.5, 0.02)

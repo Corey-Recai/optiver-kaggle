@@ -1,69 +1,69 @@
 from math import log, sqrt, exp, pi
 from scipy.stats import norm
 
+
 class BlackScholes:
 
     @classmethod
-    def d1(cls, s, x, r, sig, t, k=0):
-        return (log(s / x) + (r - k + (sig ** 2) / 2) * t) / (sig * (sqrt(t)))
+    def d1(cls, price, strike, interest, sigma, maturity, dividend=0):
+        return (log(price / strike) + (interest - dividend + (sigma ** 2) / 2) * maturity) / (sigma * (sqrt(maturity)))
 
     @classmethod
-    def d2(cls, d1, sig, t):
-        return d1 - sig * (sqrt(t))
+    def d2(cls, d1, sigma, maturity):
+        return d1 - sigma * (sqrt(maturity))
 
     @classmethod
-    def call_price(cls, d1, d2, s, x, r, t):
-        return s * norm.cdf(d1) - x * exp(-r * t) * norm.cdf(d2)
+    def call_price(cls, d1, d2, price, strike, interest, maturity):
+        return price * norm.cdf(d1) - strike * exp(-interest * maturity) * norm.cdf(d2)
 
     @classmethod
-    def put_price(cls, d1, d2, s, x, r, t):
-        return BlackScholes.call_price(d1, d2, s, x, r, t) - s + x * exp(-r * t)
+    def put_price(cls, d1, d2, price, strike, interest, maturity):
+        return BlackScholes.call_price(d1, d2, price, strike, interest, maturity) - price + strike * exp(-interest * maturity)
 
 
 class GreeksCall:
 
     @classmethod
-    def delta(cls, d1, t, k=0):
-        return exp(-k * t) * norm.cdf(d1)
+    def delta(cls, d1, maturity, dividend=0):
+        return exp(-dividend * maturity) * norm.cdf(d1)
 
     @classmethod
-    def gamma(cls, d1, s, sig, t, k=0):
-        return exp((-d1 ** 2) / 2 - k * t) / (s * sig * sqrt(2 * t * pi))
+    def gamma(cls, d1, price, sigma, maturity, dividend=0):
+        return exp((-d1 ** 2) / 2 - dividend * maturity) / (price * sigma * sqrt(2 * maturity * pi))
 
     @classmethod
-    def vega(cls, d1, s, t, k=0):
-        return s * sqrt(t) * exp(-(d1 ** 2) / 2) * exp(-k * t) / sqrt(2 * pi)
+    def vega(cls, d1, price, maturity, dividend=0):
+        return price * sqrt(maturity) * exp(-(d1 ** 2) / 2) * exp(-dividend * maturity) / sqrt(2 * pi)
 
     @classmethod
-    def rho(cls, d2, x, r, t):
-        return x * t * exp(-r * t) * norm.cdf(d2)
+    def rho(cls, d2, strike, interest, maturity):
+        return strike * maturity * exp(-interest * maturity) * norm.cdf(d2)
 
 
     @classmethod
-    def theta(cls, d1, d2, s, x, r, sig, t, k=0):
-        return -s * exp(-(d1 ** 2) / 2 - k * t) * sig / sqrt(8 * t * pi) + k * s * exp(-k * t) * norm.cdf(d1) - r * x * exp(-r * t) * norm.cdf(d2)
-
+    def theta(cls, d1, d2, price, strike, interest, sigma, maturity, dividend=0):
+        return -price * exp(-(d1 ** 2) / 2 - dividend * maturity) * sigma / sqrt(8 * maturity * pi) + dividend * price * exp(-dividend * maturity) * norm.cdf(d1) - interest * strike * exp(-interest * maturity) * norm.cdf(d2)
 
 
 class GreeksPut:
 
     @classmethod
-    def delta(cls, d1, t, k=0):
-        return exp(-k * t) * norm.cdf(-d1)
+    def delta(cls, d1, maturity, dividend=0):
+        return exp(-dividend * maturity) * norm.cdf(-d1)
 
     @classmethod
-    def gamma(cls, d1, s, sig, t, k=0):
-        return exp(-(d1 ** 2) / 2 - k * t) / ( s * sig * sqrt(2 * t * pi))
+    def gamma(cls, d1, price, sigma, maturity, dividend=0):
+        return exp(-(d1 ** 2) / 2 - dividend * maturity) / ( price * sigma * sqrt(2 * maturity * pi))
 
     @classmethod
-    def vega(cls, d1, s, t, k=0):
-        return s * exp(-(d1 ** 2) / 2 - k * t) * sqrt(t)/sqrt(2 * pi)
+    def vega(cls, d1, price, maturity, dividend=0):
+        return price * exp(-(d1 ** 2) / 2 - dividend * maturity) * sqrt(maturity)/sqrt(2 * pi)
 
     @classmethod
-    def rho(cls, d2, s, x, r, t):
-        return -x * t * exp(-r * t) * norm.cdf(-d2)
+    def rho(cls, d2, strike, interest, maturity):
+        return -strike * maturity * exp(-interest * maturity) * norm.cdf(-d2)
 
     @classmethod
-    def theta(cls, d1, d2, s, x, r, sig, t, k=0):
-        return -s * exp(-(d1 ** 2) / 2 - k * t) * sig / sqrt(8 * t* pi) - k * s * exp(-k * t) * (1 - norm.cdf(d1)) + r * x * exp(-r * t) * (1-norm.cdf(d2))
+    def theta(cls, d1, d2, price, strike, interest, sigma, maturity, dividend=0):
+        return -price * exp(-(d1 ** 2) / 2 - dividend * maturity) * sigma / sqrt(8 * maturity * pi) - dividend * price * exp(-dividend * maturity) * (1 - norm.cdf(d1)) + interest * strike * exp(-interest * maturity) * (1-norm.cdf(d2))
 

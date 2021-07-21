@@ -12,13 +12,12 @@ class BlackScholes:
         return d1 - sig * (sqrt(t))
 
     @classmethod
-    def call_price(cls, s, x, r, sig, t):
-        d1 = BlackScholes.d1(s, x, r, sig, t)
-        return s * norm.cdf(d1) - x * exp(-r * t) * norm.cdf(BlackScholes.d2(d1, sig, t))
+    def call_price(cls, d1, d2, s, x, r, t):
+        return s * norm.cdf(d1) - x * exp(-r * t) * norm.cdf(d2)
 
     @classmethod
-    def put_price(cls, s, x, r, sig, t):
-        return BlackScholes.call_price(s, x, r, sig, t) - s + x * exp(-r * t)
+    def put_price(cls, d1, d2, s, x, r, t):
+        return BlackScholes.call_price(d1, d2, s, x, r, t) - s + x * exp(-r * t)
 
 
 class GreeksCall:

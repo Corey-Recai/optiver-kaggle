@@ -14,11 +14,16 @@ class TestOptions(unittest.TestCase):
         self.assertEqual(0.39109905711695164, sut.BlackScholes.d2(d1, 0.3, 0.75))
 
     def test_call_price(self):
-        self.assertEqual(8.643433707115669, sut.BlackScholes.call_price(50., 45., 0.04, 0.3, 0.75))
+        d1 = sut.BlackScholes.d1(50., 45., 0.04, 0.3, 0.75)
+        d2 = sut.BlackScholes.d2(d1, 0.3, 0.75)
+        self.assertEqual(8.643433707115669, sut.BlackScholes.call_price(d1, d2, 50., 45., 0.04, 0.75))
 
     def test_put_price(self):
-        self.assertEqual(2.3134827167985392, sut.BlackScholes.put_price(50., 45., 0.04, 0.3, 0.75))
+        d1 = sut.BlackScholes.d1(50., 45., 0.04, 0.3, 0.75)
+        d2 = sut.BlackScholes.d2(d1, 0.3, 0.75)
+        self.assertEqual(2.3134827167985392, sut.BlackScholes.put_price(d1, d2, 50., 45., 0.04, 0.75))
 
+class TestGreeksCall(unittest.TestCase):
     def test_call_delta(self):
         d1 = sut.BlackScholes.d1(100, 90, 0.06, 0.35, 0.5, 0.02)
         self.assertEqual(0.728422438120952, sut.GreeksCall.delta(d1, 0.5, 0.02))
@@ -41,6 +46,7 @@ class TestOptions(unittest.TestCase):
         d2 = sut.BlackScholes.d2(d1, 0.35, 0.5)
         self.assertEqual(-9.958676461955603, sut.GreeksCall.theta(d1, d2, 100, 90, 0.06, 0.35, 0.5, 0.02))
 
+class TestGreeksPut(unittest.TestCase):
     def test_put_delta(self):
         d1 = sut.BlackScholes.d1(100, 90, 0.06, 0.35, 0.5, 0.02)
         self.assertEqual(0.2616273956282161, sut.GreeksPut.delta(d1, 0.5, 0.02))
